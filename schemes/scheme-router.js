@@ -49,8 +49,14 @@ router.post('/', async (req, res) => {
   const schemeData = req.body;
 
   try {
-    const scheme = await Schemes.add(schemeData);
-    res.status(201).json(scheme);
+    if (schemeData.scheme_name) {
+      const scheme = await Schemes.add(schemeData);
+      res.status(201).json(scheme);
+    } else {
+      res.status(400).json({
+        message: "All required fields not found"
+      })
+    }
   } catch (err) {
     res.status(500).json({ message: 'Failed to create new scheme' });
   }
